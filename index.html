@@ -5,18 +5,21 @@
     <style>
       * { margin: 0; padding: 0; box-sizing: border-box; }
       body { font: 13px Helvetica, Arial; }
-      form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
-      form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
-      form button { width: 9%; background: rgb(223, 200, 200); border: none; padding: 10px; }
+      #message-chat { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
+      #message-chat input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
+      #message-chat button { width: 9%; background: rgb(223, 200, 200); border: none; padding: 10px; }
       #messages { list-style-type: none; margin: 0; padding: 0; }
       #messages li { padding: 5px 10px; }
       #messages li:nth-child(odd) { background: #efefef; }
     </style>
   </head>
   <body>
-    <label for="name">name:</label><input id="name" />
+    <form id="login">
+      <label for="name">name:</label><input id="name" />
+      <button>Login</button>
+    </form>
     <ul id="messages"></ul>
-    <form action="">
+    <form id="message-chat" action="" style="visibility:hidden;">
       <input id="m" autocomplete="off" /><button>Send</button>
     </form>
   </body>
@@ -24,7 +27,9 @@
   <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
   <script>
     var socket = io();
-    $('form').submit(function(){
+    var name;
+
+    $('#message-chat').submit(function(){
       var message = {
         author: $('#name').val(),
         message: $('#m').val()
@@ -34,8 +39,39 @@
       $('#m').val('');
       return false;
     });
+
     socket.on('chat message', function(msg){
-      $('#messages').append($('<li>').text(msg));
+      if (msg.author === name) {
+        $('#messages').append($('<li>').text(msg.message).css('text-align', 'right'));
+      } else {
+        $('#messages').append($('<li>').text(msg.message));
+      }
     });
+
+    $('#login').submit(function(e){
+      e.preventDefault();
+      name = $('#name').val();
+
+      var request = $.ajax({
+        url: 'login',
+        method: "POST",
+        data: { name : name },
+        dataType: 'json'
+      });
+
+      request.fail(function( jqXHR, textStatus ) {
+        alert( "Request failed: " + jqXHR.responseJSON.message );
+        return false;
+      });
+
+      request.done(function( jqXHR, textStatus ) {
+        $('#message-chat').css('visibility', 'inherit');
+        $('#login').css('display', 'none');
+        return false;
+      });
+    });
+
+
+
   </script>
 </html>
