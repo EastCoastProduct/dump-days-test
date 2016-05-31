@@ -3,14 +3,20 @@
   <head>
     <title>Socket.IO chat</title>
     <style>
+      body { height: 100vh; }
       * { margin: 0; padding: 0; box-sizing: border-box; }
       body { font: 13px Helvetica, Arial; }
-      #message-chat { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
+      #message-chat { background: #000; padding: 3px; position: fixed; bottom: 0; width: 800px; left: 0; right: 0; }
       #message-chat input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
       #message-chat button { width: 9%; background: rgb(223, 200, 200); border: none; padding: 10px; }
-      #messages { list-style-type: none; margin: 0; padding: 0; }
-      #messages li { padding: 5px 10px; }
-      #messages li:nth-child(odd) { background: #efefef; }
+      #messages { list-style-type: none; margin: 0 auto; padding: 20px; width: 800px; overflow: auto; calc(100vh - 39px) }
+      form { width: 800px; margin: 0 auto; }
+      #messages li { padding: 10px; max-width: 80%; position: relative; }
+      .left-message { float: left; clear: both; background-color: #8cdecf; border-radius: 5px; color: white; margin-bottom: 10px; }
+      .left-message:before { content: ''; position: absolute; top: calc(50% - 7px); bottom: 0; left: -7px; background-color: #8cdecf; width: 14px; height: 14px; transform: rotate(45deg); z-index: -1; }
+      .right-message { float: right; clear: both; background-color: #ebebeb; border-radius: 5px; color: black; margin-bottom: 10px; }
+      .right-message:before { content: ''; position: absolute; top: calc(50% - 7px); bottom: 0; right: -7px; background-color: #ebebeb; width: 14px; height: 14px; transform: rotate(45deg); z-index: -1;}
+      .author { display: block; text-transform: uppercase; font-weight: bold; text-decoration: underline; margin-bottom: 5px; }
     </style>
   </head>
   <body>
@@ -42,9 +48,9 @@
 
     socket.on('chat message', function(msg){
       if (msg.author === name) {
-        $('#messages').append($('<li>').text(msg.message).css('text-align', 'right'));
+        $('#messages').append(`<li class="right-message"><span>${msg.message}</span></li>`);
       } else {
-        $('#messages').append($('<li>').text(msg.message));
+        $('#messages').append(`<li class="left-message"><span class="author">${msg.author}:</span><span>${msg.message}</span></li>`);
       }
     });
 
