@@ -9,10 +9,10 @@ app.get('/', function(req, res) {
 
 io.on('connection', function(socket){
   socket.on('chat message', function(msg){
-    io.emit('chat message', `${msg.a2uthor}: ${msg.message}`);
+    io.emit('chat message', `${msg.author}: ${msg.message}`);
   });
 });
 
-server.listen(3000, function(){
-  console.log('listening on *:3000');
+server.listen(process.env.PORT || 3000, function(){
+   console.log('listening on *:' + server.address().port);
 });
