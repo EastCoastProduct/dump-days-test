@@ -27,9 +27,9 @@ app.get('/', function(req, res) {
 });
 
 io.on('connection', function(socket) {
-  socket.on('chat message', function(msg) {
+  socket.on('message', function(msg) {
     io.emit(
-      'chat message',
+      'message',
       {
         author: msg.author,
         message: msg.message

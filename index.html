@@ -12,7 +12,7 @@
       #messages { list-style-type: none; margin: 0 auto; padding: 20px; width: 800px; overflow: auto; calc(100vh - 39px) }
       form { width: 800px; margin: 0 auto; }
       #messages li { padding: 10px; max-width: 80%; position: relative; }
-      .left-message { float: left; clear: both; background-color: #8cdecf; border-radius: 5px; color: white; margin-bottom: 10px; }
+      .left-message { float: left; clear: both; background-color: #8cdecf; border-radius: 5px; margin-bottom: 10px; }
       .left-message:before { content: ''; position: absolute; top: calc(50% - 7px); bottom: 0; left: -7px; background-color: #8cdecf; width: 14px; height: 14px; transform: rotate(45deg); z-index: -1; }
       .right-message { float: right; clear: both; background-color: #ebebeb; border-radius: 5px; color: black; margin-bottom: 10px; }
       .right-message:before { content: ''; position: absolute; top: calc(50% - 7px); bottom: 0; right: -7px; background-color: #ebebeb; width: 14px; height: 14px; transform: rotate(45deg); z-index: -1;}
@@ -41,12 +41,12 @@
         message: $('#m').val()
       };
 
-      socket.emit('chat message', message);
+      socket.emit('message', message);
       $('#m').val('');
       return false;
     });
 
-    socket.on('chat message', function(msg){
+    socket.on('message', function(msg){
       if (msg.author === name) {
         $('#messages').append(`<li class="right-message"><span>${msg.message}</span></li>`);
       } else {
