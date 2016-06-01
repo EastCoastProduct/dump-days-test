@@ -41,3 +41,5 @@ io.on('connection', function(socket) {
 server.listen(process.env.PORT || 3000, function(){
    console.log('listening on *:' + server.address().port);
 });
+
+module.exports = app;
