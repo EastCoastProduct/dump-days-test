@@ -4,7 +4,7 @@
   "description": "small chat app",
   "scripts": {
     "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./node_modules/.bin/mocha index.test.js"
   },
   "author": "",
   "engines": {
