@@ -32,7 +32,7 @@ io.on('connection', function(socket) {
       'chat message',
       {
         author: msg.author,
-        message: `${msg.author}: ${msg.message}`
+        message: msg.message
       }
     );
   });
